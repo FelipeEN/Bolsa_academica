@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>bolsa acadêmica</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <main>
+        <h3>Tenha a sua bolsa Academica</h3>
+        <div id="caixa-mensage">
+            <span id="mensagem"></span>
+        </div>
+        <form>
+            
+            <div id="caixa-input">
+                <label for="nome">Insira seu nome</label>
+                <input 
+                    id="nome"
+                    type="text"
+                    placeholder="Nome estudante"
+                >
+            </div>
+
+            <div id="caixa-input">
+                <label for="cpf">Insira seu cpf(sem pontuação)</label>
+                <input 
+
+                    maxlength="11"
+                    id="cpf"
+                    type="text"
+                    placeholder="00000000000"
+                >
+            </div>
+
+            <div id="caixa-input">
+                <label for="renda">Insira sua renda mensal</label>
+                <input 
+                    id="renda"
+                    type="number"
+                    placeholder="Renda mensal familiar"
+                >
+            </div>
+
+            <div id="caixa-select">
+                <label for="estruFami">Seus pais estão juntos?</label>
+               <select name="estruFami" id="estruFami">
+                    <option value="">Escolha</option>
+                    <option value="sim">Sim</option>
+                    <option value="nao">Não</option>
+               </select>
+            </div>
+
+            <div id="caixa-select">
+                <label for="relaComPai">Tem contato com seu pai?</label>
+               <select name="relaComPai" id="relaComPai">
+                    <option value="">Escolha</option>
+                    <option value="sim">Sim</option>
+                    <option value="nao">Não</option>
+               </select>
+            </div>
+            
+            <div id="caixa-select">
+                <label for="colegioParti">Já estudou em colegio particular ?</label>
+               <select name="colegioParti" id="colegioParti">
+                    <option value="">Escolha</option>
+                    <option value="sim">Sim</option>
+                    <option value="nao">Não</option>
+               </select>
+            </div>
+
+            <div id="caixa-select">
+                <label for="racas">Insira sua raça</label>
+                <select name="racas" id="racas">
+                    <option value="">Escolha</option>
+                    <option value="preta">preta</option>
+                    <option value="indigina">indigina</option>
+                    <option value="branca">branca</option>
+                </select>
+                >
+            </div>
+            
+            <button
+                type="submit"
+            >
+                enviar
+            </button>
+        </form>
+
+        <section>
+            <h3>ver minha informações</h3>
+            <p>Lembre-se que a nota para ser aprovado é a partir de 7</p>
+            <div id="caixa-informacao">
+                <label for="cpfVerifi">Insira seu cpf(sem pontuação)</label>
+                <input 
+                maxlength="11"
+                    id="cpfVerifi"
+                    type="text"
+                    placeholder="00000000000"
+                >
+                <span id="informacao"></span>
+            </div>
+
+            <button
+                id="btnVerificar"
+                type="button"
+            >
+            ver
+            </button>
+        </section>
+
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>

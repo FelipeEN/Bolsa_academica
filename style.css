@@ -1,0 +1,225 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f3f5f9;
+    color: #252b36;
+    min-height: 100vh;
+}
+
+/* CONTEÚDO PRINCIPAL */
+
+main {
+    width: 90%;
+    max-width: 900px;
+    margin: 40px auto;
+}
+
+/* TÍTULOS */
+
+h3 {
+    font-size: 24px;
+    margin-bottom: 25px;
+    color: #252b36;
+}
+
+/* CARD DO FORMULÁRIO */
+
+main > form {
+    background: white;
+    padding: 35px;
+    border-radius: 15px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+/* CAIXAS DOS INPUTS */
+
+#caixa-input,
+#caixa-select {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+#caixa-input label,
+#caixa-select label,
+#caixa-informacao label {
+    font-size: 14px;
+    font-weight: bold;
+    color: #4b5563;
+}
+
+/* INPUTS E SELECTS */
+
+input,
+select {
+    width: 100%;
+    height: 45px;
+
+    padding: 0 12px;
+
+    border: 1px solid #d5d9e0;
+    border-radius: 8px;
+
+    background: #fafbfc;
+
+    font-size: 14px;
+
+    outline: none;
+
+    transition: 0.2s;
+}
+
+input:focus,
+select:focus {
+    border-color: #5b5bd6;
+
+    box-shadow: 0 0 0 3px rgba(91, 91, 214, 0.12);
+}
+
+/* BOTÃO */
+
+button {
+    border: none;
+
+    height: 45px;
+
+    padding: 0 25px;
+
+    border-radius: 8px;
+
+    background: #5b5bd6;
+
+    color: white;
+
+    font-size: 15px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+}
+
+button:hover {
+    background: #4747b8;
+    transform: translateY(-1px);
+}
+
+/* BOTÃO DO FORMULÁRIO OCUPA A LINHA TODA */
+
+main > form > button {
+    grid-column: 1 / -1;
+    margin-top: 10px;
+}
+
+
+/* ÁREA DE CONSULTA */
+
+section {
+    margin-top: 30px;
+
+    background: white;
+
+    padding: 30px;
+
+    border-radius: 15px;
+
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+}
+
+section h3 {
+    margin-bottom: 20px;
+}
+section p{
+    margin-bottom: 12px;
+}
+
+/* ÁREA DO CPF */
+
+#caixa-informacao {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+/* BOTÃO VER */
+
+#btnVerificar {
+    margin-top: 15px;
+}
+
+
+/* INFORMAÇÕES RETORNADAS */
+
+#informacao {
+    margin-top: 15px;
+
+    padding: 15px;
+
+    border-radius: 8px;
+
+    background: #f3f5f9;
+
+    color: #374151;
+
+    font-size: 14px;
+
+    min-height: 20px;
+}
+
+
+/* MENSAGEM DE ELEGIBILIDADE */
+
+#caixa-mensage {
+    margin-top: 25px;
+
+    background: white;
+
+    padding: 25px;
+
+    border-radius: 15px;
+
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+#mensagem {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+
+/* RESPONSIVIDADE */
+
+@media (max-width: 700px) {
+
+    main {
+        width: 94%;
+        margin: 25px auto;
+    }
+
+    main > form {
+        grid-template-columns: 1fr;
+        padding: 25px;
+    }
+
+    main > form > button {
+        grid-column: auto;
+    }
+
+    section {
+        padding: 25px;
+    }
+
+}
