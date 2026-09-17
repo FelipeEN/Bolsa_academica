@@ -57,7 +57,7 @@ form.addEventListener('submit', (e) =>{
         let boolean = valida(cpfValue)
         
         if (boolean === true){
-            mensagem.innerHTML = `Cpf ja cadastrado no sistema, para conseguir uma bolsa`
+            mensagem.innerHTML = `Cpf já cadastrado no sistema.`
             return
         }
 
@@ -133,7 +133,14 @@ function verificarStatus(cpf){
         }
     
 }
-            
 
+const btnIrAdm = document.getElementById("irAdm")
+
+function irAdm (){
+     window.location.href = "./pages/adm/adm.html";
+}
+btnIrAdm.addEventListener('click', ()=>{
+ irAdm()
+})
 
 

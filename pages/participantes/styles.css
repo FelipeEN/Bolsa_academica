@@ -1,0 +1,224 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+
+    font-family: Arial, Helvetica, sans-serif;
+
+    background: linear-gradient(
+        135deg,
+        #211b2d,
+        #392c50,
+        #5b467a
+    );
+
+    padding: 50px 30px;
+}
+
+
+/* =========================
+   TÍTULO
+========================= */
+
+h3 {
+    text-align: center;
+
+    color: white;
+
+    font-size: 28px;
+
+    margin-bottom: 40px;
+}
+
+
+/* =========================
+   CAIXAS DOS PARTICIPANTES
+========================= */
+
+#caixa-aprovados,
+#caixa-reprovados {
+    width: 100%;
+    max-width: 600px;
+
+    margin: 0 auto 25px;
+
+    background: white;
+
+    border-radius: 15px;
+
+    padding: 25px;
+
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+}
+
+
+/* =========================
+   TÍTULOS
+========================= */
+
+#caixa-aprovados::before {
+    content: "✓ APROVADOS";
+
+    display: block;
+
+    color: #26734d;
+
+    font-size: 18px;
+
+    font-weight: bold;
+
+    margin-bottom: 20px;
+
+    padding-bottom: 12px;
+
+    border-bottom: 2px solid #d9eee3;
+}
+
+
+#caixa-reprovados::before {
+    content: "✕ REPROVADOS";
+
+    display: block;
+
+    color: #a43d3d;
+
+    font-size: 18px;
+
+    font-weight: bold;
+
+    margin-bottom: 20px;
+
+    padding-bottom: 12px;
+
+    border-bottom: 2px solid #f0dada;
+}
+
+
+/* =========================
+   PARTICIPANTES
+========================= */
+
+#aprovados,
+#reprovados {
+    display: block;
+
+    color: #333;
+
+    font-size: 15px;
+
+    line-height: 1.8;
+}
+
+
+/* =========================
+   CARTÕES CRIADOS PELO JS
+========================= */
+
+.participante {
+    background: #f7f5fa;
+
+    border: 1px solid #e4deeb;
+
+    border-radius: 10px;
+
+    padding: 15px;
+
+    margin-bottom: 12px;
+
+    transition: 0.2s;
+}
+
+.participante:hover {
+    transform: translateY(-2px);
+
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+}
+
+
+/* =========================
+   APROVADO
+========================= */
+
+.aprovado {
+    border-left: 5px solid #3c9b69;
+}
+
+
+/* =========================
+   REPROVADO
+========================= */
+
+.reprovado {
+    border-left: 5px solid #b94b4b;
+}
+
+
+/* =========================
+   RESPONSIVIDADE
+========================= */
+
+@media (max-width: 600px) {
+
+    body {
+        padding: 30px 15px;
+    }
+
+    h3 {
+        font-size: 22px;
+
+        margin-bottom: 25px;
+    }
+
+    #caixa-aprovados,
+    #caixa-reprovados {
+        padding: 20px;
+    }
+}
+
+/* =========================
+   BOTÃO SAIR
+========================= */
+
+#sair {
+    display: block;
+
+    width: 180px;
+
+    margin: 30px auto 0;
+
+    padding: 13px 20px;
+
+    border: 1px solid #d65c68;
+
+    border-radius: 9px;
+
+    background: white;
+
+    color: #b33f4b;
+
+    font-size: 15px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+}
+
+#sair:hover {
+    background: #d65c68;
+
+    color: white;
+
+    transform: translateY(-2px);
+
+    box-shadow: 0 5px 15px rgba(214, 92, 104, 0.25);
+}
+
+#sair:active {
+    transform: translateY(0);
+}
