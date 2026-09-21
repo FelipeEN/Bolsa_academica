@@ -7,68 +7,119 @@ const form = document.querySelector('form')
 
 let mensagem = document.querySelector("#mensagem")
 
-let adms = JSON.parse(localStorage.getItem("adms")) || []
 
-function verificarAdm (login){
-    let verificar = adms.find((e)=>{
-     return login === e.login 
-    })
-    return verificar   
-}
-function verificarCadastro (login,senha){
-    let verificar = adms.find((e)=>{
-     return login === e.login && senha === e.senha
-    })
-    return verificar   
-}
+
 
 function irParaParticipantes (){
     window.location.href = "../participantes/resulParti.html";
 }
 
-form.addEventListener('submit', (e)=>{
+entrar.addEventListener('click', async ()=>{
 
-    e.preventDefault()
 
-    let loginValue = login.value
-    let senhaValue = senha.value
+    let loginValue = login.value.trim()
+    let senhaValue = senha.value.trim()
 
     if(!loginValue || !senhaValue ){
         mensagem.innerHTML = `preencha os campos nescessarios` 
         return
     }
+   try{
+    const resposta = await fetch(
+        
+        "http://localhost:3000/api/administradores/login",
+        {
+            method: "POST",
 
-    let status = verificarAdm(loginValue) 
-    if (status){
-        mensagem.innerHTML = `Usuário ja cadastrado` 
+            headers:{
+                "Content-Type": "application/json"
+            },
+
+            body : JSON.stringify({
+                login : loginValue,
+                senha : senhaValue
+            })
+        }
+    )
+
+
+    const resultado = await resposta.json()
+
+
+
+    if(!resposta.ok){
+        if(resultado.erros){
+            mensagem.innerHTML = resultado.erros.join("<br>")
+        }else{
+            mensagem.innerHTML = resultado.mensagem
+        }
+
         return
     }
 
-    adms.push({
-        login : loginValue,
-        senha: senhaValue
-    })
+    localStorage.setItem("token",resultado.token)
 
-    localStorage.setItem("adms", JSON.stringify(adms))
-    
-    mensagem.innerHTML = `Adm Cadastrado com sucesso` 
+    mensagem.innerHTML = `login realizado com sucesso`
+
+    irParaParticipantes()
+            
+
+   }catch(error){
+        console.log(error)
+
+        mensagem.innerHTML = `Não foi possivel conectar ao servidor` 
+   }
     
 })
 
+const cadastrar = document.getElementById("cadastrar")
 
-entrar.addEventListener("click", ()=>{
-  
-    const loginValue = login.value
-    const senhaValue = senha.value
+cadastrar.addEventListener("click", async () => {
 
-    let status = verificarCadastro (loginValue, senhaValue)
+    const loginValue = login.value.trim()
+    const senhaValue = senha.value.trim()
 
-    if (!status){
-         mensagem.innerHTML = `Senha ou login incorretos` 
-         return
-    }else{
-
-        irParaParticipantes()
+    if (!loginValue || !senhaValue) {
+        mensagem.innerHTML = "Preencha os campos necessários"
+        return
     }
-    
+    try {
+
+        const resposta = await fetch(
+            "http://localhost:3000/api/administradores",
+            {
+                method: "POST",
+
+                headers: {
+                    "Content-Type": "application/json"
+                },
+
+                body: JSON.stringify({
+                    login: loginValue,
+                    senha: senhaValue
+                })
+            }
+        )
+
+        const resultado = await resposta.json()
+
+       if(!resposta.ok){
+        if(resultado.erros){
+            mensagem.innerHTML = resultado.erros.join("<br>")
+        }else{
+            mensagem.innerHTML = resultado.mensagem
+        }
+
+        return
+    }
+
+        mensagem.innerHTML = "Administrador cadastrado com sucesso!"
+
+    } catch (error) {
+
+        console.log(error)
+
+        mensagem.innerHTML =
+            "Não foi possível conectar ao servidor"
+    }
 })

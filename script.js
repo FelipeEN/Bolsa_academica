@@ -10,27 +10,12 @@ const cpfVerifi = document.querySelector("#cpfVerifi")
 
 let mensagem = document.querySelector("#mensagem")
 
-
 const btnVerificar = document.getElementById("btnVerificar")
 
 const form = document.querySelector('form')
 
-let statusBolsa = 0 
 
-
-let participantes = JSON.parse(localStorage.getItem("participantes")) || []
-
-function valida (cpf){
-    let  ok = false
-    const validar = participantes.forEach((e)=>{
-        if (cpf === e.cpfAluno){
-            ok = true
-        }
-    }
-)
-return ok 
-}
-form.addEventListener('submit', (e) =>{
+form.addEventListener('submit', async (e) =>{
     
     e.preventDefault()
     
@@ -43,7 +28,13 @@ form.addEventListener('submit', (e) =>{
     let racasValue = String(racas.value)
     
 
-    if (!nomeValue|| !rendaValue || !racasValue ||!estruFamiValue|| !relaComPaiValue||!colegioPartiValue || !cpfValue)
+    if (!nomeValue|| 
+            !rendaValue ||
+            !racasValue ||
+            !estruFamiValue||
+            !relaComPaiValue||
+            !colegioPartiValue ||
+            !cpfValue )
         {
             mensagem.innerHTML = `Preencha os campos vazios` 
         return
@@ -53,94 +44,148 @@ form.addEventListener('submit', (e) =>{
             return
         }
 
-  
-        let boolean = valida(cpfValue)
-        
-        if (boolean === true){
-            mensagem.innerHTML = `Cpf já cadastrado no sistema.`
-            return
-        }
-
     //-----------------------------------------
-        if (rendaValue <= 3400){
-            statusBolsa += 3 
-        }
+       const dados = {
+        nome : nomeValue,
+        cpf: cpfValue,
+        renda: rendaValue,
 
-        if(estruFamiValue === "nao"){
-            statusBolsa += 3
-        }
-
-        if(relaComPaiValue === "nao"){
-            statusBolsa += 3
-        }
-        if(colegioPartiValue === "nao"){
-            statusBolsa += 3
-        }
-        if(racasValue === "preta" || racasValue ==="indigina")  {
-            statusBolsa += 3
-        }
+        pais_juntos : estruFamiValue === "sim",
+        contato_pai : relaComPaiValue === "sim",
+        estudou_escola_particular : colegioPartiValue === "sim",
         
-        if (statusBolsa >=7){
-            mensagem.innerHTML= `Aluno(a) ${nomeValue} foi Aprovado(a)
-             com uma pontuação de requerimento à bolsa de ${statusBolsa} pontos.` 
-        }else{
-            mensagem.innerHTML = `Acreditamos aparti das suas respostas ao questionario,
-            que existam mais pessoas que precisam dessa bolsa de estudos. Obrigado ${nomeValue} `
-        }
 
+        raca : racasValue
+       }
     
+       console.log("Eviando dados para API",dados)
 
-            participantes.push( {
-                nomeAluno: nomeValue,
-                cpfAluno : cpfValue,
-                statusBolsaAluno : statusBolsa
-            }) 
-        
-            localStorage.setItem("participantes", JSON.stringify(participantes))
+       const {resposta,resultado} = await cadastrarParticipantes(dados)
 
-        zeraPontuação()
+       if (resposta.status === 409){
+        mensagem.innerHTML = resultado.mensagem
+        return
+       }
 
+       if(resposta.status === 400){
+        mensagem.innerHTML = resultado.erros.join("<br>")
+        return
+       }
+
+       if(!resposta.ok){
+        mensagem.innerHTML = resultado.mensagem || `Erro ao cadastrar participante`
+        return
+       }
+
+
+       if(resposta.status === 201){
+            if(resultado.status_bolsa === "aprovado"){
+                mensagem.innerHTML = 
+                `
+                    Aluno(a) ${resultado.nome} foi Aprovado(a)
+                    com uma pontuação de requerimento à bolsa de
+                    ${resultado.pontuacao} pontos.
+                `
+            }else{
+                mensagem.innerHTML = 
+                `
+                    Acreditamos a partir das suas respostas ao questionário,
+                    que existam mais pessoas que precisam dessa bolsa de estudos.
+                    Obrigado ${resultado.nome}.
+                `
+            }
+       }
 })
+                
 
 
 btnVerificar.addEventListener('click',()=>{
     
-    let cpfVerificarValue = cpfVerifi.value
+    const cpfVerificarValue = cpfVerifi.value.trim()
     
     verificarStatus(cpfVerificarValue)
 })
 
 const informacao = document.querySelector("#informacao")
 
-function zeraPontuação (){
-    statusBolsa = 0
-}
-function verificarStatus(cpf){
+
+async function verificarStatus(cpf){
     
-    const status = participantes.find((e)=>{
-        return cpf === e.cpfAluno
-    })
- 
-    if (status){
-             
-            informacao.innerHTML = `
-            Aluno(a) ${status.nomeAluno} 
-            <br> CPF = ${status.cpfAluno} 
-            <br> Nota = ${status.statusBolsaAluno} 
-            `            
-    }   else{
-            informacao.innerHTML = `CPF não consta no sistema` 
+    if(!cpf){
+        mensagem.innerHTML= `Digite um CPF`
+        return
+    }
+
+    if(cpf.length !== 11){
+        mensagem.innerHTML= `Digite um CPF com 11 numeros`
+        return
+    }
+
+    try{
+        const resposta = await fetch(
+            `http://localhost:3000/api/participantes/${cpf}`
+
+        )
+        const resultado = await resposta.json()
+
+        if(resposta.status === 404){
+            informacao.innerHTML =`CPF não consta no sistema` 
+            return
         }
+
+        if (!resposta.ok){
+            informacao.innerHTML = resultado.mensagem || "Erro ao consultar CPF"
+            return
+        }
+
+        informacao.innerHTML = `
+            Aluno(a): ${resultado.nome}
+            <br>
+            CPF: ${resultado.cpf}
+            <br>
+            Pontuação:${resultado.pontuacao}
+            <br>
+            Status: ${resultado.status_bolsa}
+
+        `
+
+    }catch(error){
+        console.log(error)
+        informacao.innerHTML =`Não foi possivel consultar no sistema`
+    }
+ 
+   
     
 }
 
 const btnIrAdm = document.getElementById("irAdm")
 
 function irAdm (){
-     window.location.href = "./pages/adm/adm.html";
-}
-btnIrAdm.addEventListener('click', ()=>{
- irAdm()
+        window.location.href = "./pages/adm/adm.html";
+    }
+    btnIrAdm.addEventListener('click', ()=>{
+    irAdm()
 })
 
+async function cadastrarParticipantes(dados){
+  const resposta = await fetch(
+      "http://localhost:3000/api/participantes",
+      
+      {
+          method: "POST",
 
+          headers:{
+              "Content-Type": "application/json"
+          },
+          
+          body : JSON.stringify(dados)
+      }
+  )
+    const resultado = await resposta.json()
+
+  return{
+    resposta,
+    resultado
+  }  
+      
+}
